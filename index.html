@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports — About / Analyze Tab Prototype</title>
+<style>
+  :root {
+    --surface: #FFFFFF;
+    --surface-dim: #F4F4F5;
+    --surface-container: #EDEDEF;
+    --surface-container-low: #F5F5F6;
+    --surface-container-high: #E5E5E8;
+    --surface-container-highest: #DDDDE0;
+    --on-surface: #18181B;
+    --on-surface-secondary: #52525B;
+    --on-surface-tertiary: #71717A;
+    --outline: #D4D4D8;
+    --outline-subtle: #E4E4E7;
+    --primary: #4F46E5;
+    --primary-soft: rgba(79,70,229,0.08);
+    --primary-border: rgba(79,70,229,0.25);
+    --on-primary: #FFFFFF;
+    --warning: #D97706;
+    --warning-bg: #FFFBEB;
+    --warning-border: #FDE68A;
+    --font: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    --mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--surface-dim);
+    color: var(--on-surface);
+    display: flex;
+    font-family: var(--font);
+    justify-content: center;
+    min-height: 100vh;
+    padding: 32px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { display: flex; flex-direction: column; gap: 20px; max-width: 420px; width: 100%; }
+
+  /* Controls bar */
+  .controls-bar {
+    background: var(--surface);
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 14px;
+  }
+  .toggle-pill {
+    align-items: center;
+    background: var(--surface-dim);
+    border: 1px solid var(--outline-subtle);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 11.5px;
+    font-weight: 500;
+    gap: 6px;
+    padding: 5px 12px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .toggle-pill:hover { border-color: var(--outline); }
+  .toggle-pill.active {
+    background: var(--primary-soft);
+    border-color: var(--primary-border);
+    color: var(--primary);
+  }
+  .toggle-pill input { display: none; }
+
+  /* Panel frame — mimics the sidebar width */
+  .panel-frame {
+    background: var(--surface);
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+    max-height: 85vh;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  /* Tabs row */
+  .tabs {
+    border-bottom: 1px solid var(--outline-subtle);
+    display: flex;
+    flex-shrink: 0;
+    padding: 0 16px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--on-surface-tertiary);
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 12px 14px 10px;
+    transition: all 0.12s;
+  }
+  .tab-btn:hover { color: var(--on-surface-secondary); }
+  .tab-btn.active { border-bottom-color: var(--primary); color: var(--primary); }
+
+  /* Scrollable content */
+  .scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* ── Markdown / prose view ── */
+  .prose {
+    color: var(--on-surface);
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 20px 18px 24px;
+  }
+  .prose h3 {
+    color: var(--on-surface);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 20px 0 6px;
+    text-transform: uppercase;
+  }
+  .prose h3:first-child { margin-top: 0; }
+  .prose p {
+    color: var(--on-surface-secondary);
+    margin: 0 0 10px;
+  }
+  .prose strong { color: var(--on-surface); font-weight: 600; }
+  .prose ul {
+    color: var(--on-surface-secondary);
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 0;
+  }
+  .prose li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .prose li::before {
+    color: var(--on-surface-tertiary);
+    content: '·';
+    font-size: 18px;
+    font-weight: 700;
+    left: 0;
+    line-height: 1;
+    position: absolute;
+    top: 1px;
+  }
+  .prose code {
+    background: var(--surface-container);
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 0.88em;
+    padding: 1px 5px;
+  }
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--outline-subtle);
+    margin: 18px 0;
+  }
+
+  /* Clickable finding rows in markdown view */
+  .prose-finding {
+    align-items: flex-start;
+    border-left: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    gap: 0;
+    margin: 0 -8px 6px;
+    padding: 6px 8px;
+    transition: background 0.12s, border-color 0.15s;
+  }
+  .prose-finding:hover {
+    background: var(--surface-container);
+    border-left-color: var(--primary);
+  }
+  .prose-finding-text { flex: 1; min-width: 0; }
+  .prose-finding-icon {
+    align-items: center;
+    color: var(--on-surface-tertiary);
+    display: flex;
+    flex-shrink: 0;
+    height: 18px;
+    justify-content: center;
+    margin-left: 6px;
+    margin-top: 1px;
+    opacity: 0.35;
+    transition: opacity 0.12s, color 0.12s;
+    width: 14px;
+  }
+  .prose-finding-icon svg { height: 12px; width: 12px; }
+  .prose-finding:hover .prose-finding-icon { opacity: 1; color: var(--primary); }
+
+  /* ── Rich / structured view ── */
+  .rich-content { padding: 18px 18px 24px; }
+
+  .rich-section { margin-bottom: 18px; }
+  .rich-section:last-child { margin-bottom: 0; }
+  .rich-section-title {
+    color: var(--on-surface);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .rich-section-body {
+    color: var(--on-surface-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .rich-section-body p { margin: 0 0 6px; }
+  .rich-section-body strong { color: var(--on-surface); font-weight: 600; }
+  .rich-divider {
+    border: none;
+    border-top: 1px solid var(--outline-subtle);
+    margin: 0 0 18px;
+  }
+
+  .rich-kv { margin-bottom: 5px; }
+  .rich-kv-label {
+    color: var(--on-surface);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .rich-kv-value {
+    color: var(--on-surface-secondary);
+    font-size: 12.5px;
+  }
+
+  .rich-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rich-list li {
+    color: var(--on-surface-secondary);
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin-bottom: 4px;
+    padding-left: 14px;
+    position: relative;
+  }
+  .rich-list li::before {
+    color: var(--on-surface-tertiary);
+    content: '·';
+    font-size: 18px;
+    font-weight: 700;
+    left: 0;
+    line-height: 1;
+    position: absolute;
+    top: 1px;
+  }
+  .rich-list li strong { color: var(--on-surface); }
+
+  /* AI insight cards */
+  .ai-insights-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .ai-badge {
+    align-items: center;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary-border);
+    border-radius: var(--radius-full);
+    color: var(--primary);
+    display: inline-flex;
+    font-size: 10.5px;
+    font-weight: 600;
+    gap: 4px;
+    padding: 3px 10px;
+  }
+  .ai-badge svg { height: 11px; width: 11px; }
+  .ai-meta {
+    color: var(--on-surface-tertiary);
+    font-size: 11px;
+  }
+  .icon-btn {
+    align-items: center;
+    background: none;
+    border: 1px solid var(--outline-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--on-surface-tertiary);
+    cursor: pointer;
+    display: flex;
+    height: 26px;
+    justify-content: center;
+    transition: all 0.12s;
+    width: 26px;
+  }
+  .icon-btn:hover { background: var(--surface-dim); border-color: var(--outline); }
+  .icon-btn svg { height: 13px; width: 13px; }
+
+  .insight-card {
+    align-items: flex-start;
+    background: var(--surface-dim);
+    border-left: 2px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    gap: 0;
+    margin-bottom: 6px;
+    padding: 10px 10px 10px 12px;
+    transition: background 0.12s, border-color 0.15s;
+  }
+  .insight-card:last-child { margin-bottom: 0; }
+  .insight-card:hover {
+    background: var(--surface-container);
+    border-left-color: var(--primary);
+  }
+  .insight-card-content { flex: 1; min-width: 0; }
+  .insight-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .insight-body { color: var(--on-surface-secondary); font-size: 12px; line-height: 1.55; }
+  .insight-action {
+    align-items: center;
+    color: var(--on-surface-tertiary);
+    display: flex;
+    flex-shrink: 0;
+    height: 20px;
+    justify-content: center;
+    margin-left: 6px;
+    margin-top: 1px;
+    opacity: 0.35;
+    transition: opacity 0.12s, color 0.12s;
+    width: 16px;
+  }
+  .insight-action svg { height: 14px; width: 14px; }
+  .insight-card:hover .insight-action { opacity: 1; color: var(--primary); }
+
+  .outdated-banner {
+    align-items: flex-start;
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    border-radius: var(--radius-md);
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 8px 12px;
+  }
+  .outdated-banner svg { color: var(--warning); flex-shrink: 0; height: 14px; margin-top: 1px; width: 14px; }
+  .outdated-text { font-size: 11.5px; line-height: 1.45; }
+  .outdated-text strong { display: block; margin-bottom: 1px; }
+
+  /* Loading state */
+  .ai-loading {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 48px 0;
+  }
+  .ai-loading svg { animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: .4; } 50% { opacity: 1; } }
+  .ai-loading span { color: var(--on-surface-tertiary); font-size: 12.5px; }
+
+  /* Footers */
+  .panel-footer {
+    border-top: 1px solid var(--outline-subtle);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 6px;
+    padding: 10px 16px;
+  }
+  .btn {
+    align-items: center;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    gap: 6px;
+    justify-content: center;
+    padding: 8px 14px;
+    transition: all 0.12s;
+    width: 100%;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn svg { height: 13px; width: 13px; }
+  .btn-primary { background: var(--primary); border: none; color: var(--on-primary); }
+  .btn-ghost { background: none; border: 1px solid var(--outline-subtle); color: var(--on-surface-secondary); }
+  .btn-ghost:hover { border-color: var(--outline); }
+
+  /* Chat demo */
+  .chat-demo {
+    background: var(--surface);
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+  }
+  .chat-demo-header { align-items: center; display: flex; font-size: 13px; font-weight: 600; gap: 6px; margin-bottom: 10px; }
+  .chat-demo-header svg { color: var(--primary); height: 16px; width: 16px; }
+  .chat-demo-body { background: var(--surface-dim); border-radius: var(--radius-md); font-size: 12.5px; line-height: 1.55; padding: 10px 12px; }
+  .chat-demo-hint { color: var(--on-surface-tertiary); font-size: 11px; margin-top: 6px; }
+
+  /* Upsell card */
+  .upsell-card {
+    border: 1px solid var(--outline-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+  }
+  .upsell-preview {
+    filter: blur(3px);
+    opacity: 0.5;
+    padding: 10px 12px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .upsell-preview-item {
+    background: var(--surface-dim);
+    border-radius: var(--radius-sm);
+    margin-bottom: 5px;
+    padding: 8px 10px;
+  }
+  .upsell-preview-title { font-size: 11px; font-weight: 600; }
+  .upsell-preview-body { color: var(--on-surface-tertiary); font-size: 10.5px; margin-top: 2px; }
+  .upsell-overlay {
+    align-items: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,1) 100%);
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    justify-content: flex-end;
+    left: 0;
+    padding: 20px 16px 14px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .upsell-icon {
+    align-items: center;
+    background: var(--primary-soft);
+    border-radius: var(--radius-full);
+    display: flex;
+    height: 28px;
+    justify-content: center;
+    margin-bottom: 2px;
+    width: 28px;
+  }
+  .upsell-icon svg { color: var(--primary); height: 16px; width: 16px; }
+  .upsell-headline {
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .upsell-subtext {
+    color: var(--on-surface-secondary);
+    font-size: 11.5px;
+    line-height: 1.45;
+    max-width: 280px;
+    text-align: center;
+  }
+  .upsell-cta {
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    display: flex;
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    gap: 4px;
+    margin-top: 2px;
+    padding: 0;
+    transition: opacity 0.12s;
+  }
+  .upsell-cta:hover { opacity: 0.7; }
+  .upsell-cta svg { height: 12px; width: 12px; }
+
+  /* Markdown-view upsell */
+  .md-upsell {
+    align-items: center;
+    border: 1px dashed var(--outline-subtle);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 4px 0;
+    padding: 18px 16px 14px;
+  }
+  .md-upsell-icon { color: var(--primary); height: 22px; margin-bottom: 2px; width: 22px; }
+  .md-upsell-icon svg { height: 22px; width: 22px; }
+  .md-upsell-headline { font-size: 12px; font-weight: 700; }
+  .md-upsell-subtext {
+    color: var(--on-surface-secondary);
+    font-size: 11.5px;
+    line-height: 1.4;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Controls bar -->
+  <div class="controls-bar">
+    <label class="toggle-pill" id="pill-ai">
+      <input type="checkbox" id="aiToggle" onchange="toggle()">
+      AI SKU
+    </label>
+    <label class="toggle-pill" id="pill-outdated">
+      <input type="checkbox" id="outdatedToggle" onchange="toggle()">
+      Outdated
+    </label>
+    <label class="toggle-pill" id="pill-upsell">
+      <input type="checkbox" id="upsellToggle" onchange="toggle()" checked>
+      Upsell
+    </label>
+    <label class="toggle-pill" id="pill-markdown">
+      <input type="checkbox" id="markdownToggle" onchange="toggle()">
+      Markdown
+    </label>
+  </div>
+
+  <!-- Panel -->
+  <div class="panel-frame">
+    <div class="tabs">
+      <button class="tab-btn" onclick="selectTab('data')" id="tab-data">Data</button>
+      <button class="tab-btn" onclick="selectTab('settings')" id="tab-settings">Settings</button>
+      <button class="tab-btn active" onclick="selectTab('about')" id="tab-about">About</button>
+    </div>
+
+    <!-- Placeholder tabs -->
+    <div class="scroll-area hidden" id="content-data">
+      <div style="color:var(--on-surface-tertiary);font-size:13px;padding:60px 0;text-align:center;">Data tab (not part of prototype)</div>
+    </div>
+    <div class="scroll-area hidden" id="content-settings">
+      <div style="color:var(--on-surface-tertiary);font-size:13px;padding:60px 0;text-align:center;">Settings tab (not part of prototype)</div>
+    </div>
+
+    <!-- ═══ MARKDOWN VIEW ═══ -->
+    <div class="scroll-area hidden" id="view-markdown"><div class="prose" id="markdownBody"></div></div>
+
+    <!-- ═══ RICH VIEW ═══ -->
+    <div class="scroll-area" id="view-rich">
+      <div class="rich-content">
+
+        <!-- 1. Summary (always shown) -->
+        <div class="rich-section">
+          <div class="rich-section-title">Summary</div>
+          <div class="rich-section-body">
+            <p>This table shows <strong>employee-level compensation equity data</strong> for active US employees, <strong>grouped by department and level</strong>. It answers questions like: which employees have pay gaps relative to their cohort, who is flagged for equity review, and where retention risk correlates with compensation.</p>
+          </div>
+        </div>
+
+        <!-- 2. AI Analysis (AI tier only) -->
+        <div id="rich-ai" class="hidden">
+          <hr class="rich-divider">
+
+          <div class="ai-insights-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.09 6.26L20.18 9l-5 4.36L16.82 20 12 16.77 7.18 20l1.64-6.64L3.82 9l6.09-.74z"/></svg>
+                AI Analysis
+              </span>
+              <span class="ai-meta">Apr 20, 9:15 AM</span>
+            </div>
+            <button class="icon-btn" onclick="handleRefresh()" id="refreshBtn" title="Refresh">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+
+          <div id="outdatedBanner" class="outdated-banner hidden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="outdated-text"><strong>Analysis may be outdated</strong>The underlying data has changed since this was generated.</div>
+          </div>
+
+          <div id="aiLoading" class="ai-loading hidden">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--primary)"><path d="M12 2l2.09 6.26L20.18 9l-5 4.36L16.82 20 12 16.77 7.18 20l1.64-6.64L3.82 9l6.09-.74z"/></svg>
+            <span>Analyzing report data…</span>
+          </div>
+
+          <div id="aiInsights">
+            <div class="insight-card" onclick="handleInsightClick(this)">
+              <div class="insight-card-content">
+                <div class="insight-title">38% of retention_risk values are null</div>
+                <div class="insight-body">63 of 164 rows have no retention risk score. These are concentrated in Engineering (28 nulls) and Product (19 nulls) — likely employees missing market benchmark data.</div>
+              </div>
+              <div class="insight-action"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg></div>
+            </div>
+            <div class="insight-card" onclick="handleInsightClick(this)">
+              <div class="insight-card-content">
+                <div class="insight-title">adjusted_gap outlier in row 47</div>
+                <div class="insight-body">One employee shows an adjusted gap of −23.4%, which is 4.1σ from the mean (−3.8%). This is likely a data issue — verify the compa_ratio input for this record.</div>
+              </div>
+              <div class="insight-action"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg></div>
+            </div>
+            <div class="insight-card" onclick="handleInsightClick(this)">
+              <div class="insight-card-content">
+                <div class="insight-title">equity_flag distribution is heavily skewed</div>
+                <div class="insight-body">72% of rows are "OK", 18% are "Monitor", 10% are "Review". If the goal is to focus on at-risk employees, consider filtering to Monitor + Review only — the OK rows may be adding noise.</div>
+              </div>
+              <div class="insight-action"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg></div>
+            </div>
+            <div class="insight-card" onclick="handleInsightClick(this)">
+              <div class="insight-card-content">
+                <div class="insight-title">Grouping produces 3 groups with only 1 row</div>
+                <div class="insight-body">The Level × Department grouping creates 22 groups, but 3 have a single employee (e.g., L7 × Design). Aggregations on single-row groups aren't meaningful — consider broadening the grouping.</div>
+              </div>
+              <div class="insight-action"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg></div>
+            </div>
+            <div class="insight-card" onclick="handleInsightClick(this)">
+              <div class="insight-card-content">
+                <div class="insight-title">pay_gap_to_cohort uses a small peer set for 12 rows</div>
+                <div class="insight-body">12 employees have cohort sizes of exactly 5 (the minimum threshold). Their pay gap calculations have wider confidence intervals — flag these if using this column for decisions.</div>
+              </div>
+              <div class="insight-action"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upsell (non-AI SKU only, when upsell enabled) -->
+        <div id="rich-upsell" class="hidden">
+          <hr class="rich-divider">
+          <div class="upsell-card">
+            <div class="upsell-preview">
+              <div class="upsell-preview-item">
+                <div class="upsell-preview-title">38% of retention_risk values are null</div>
+                <div class="upsell-preview-body">63 of 164 rows have no retention risk score…</div>
+              </div>
+              <div class="upsell-preview-item">
+                <div class="upsell-preview-title">adjusted_gap outlier in row 47</div>
+                <div class="upsell-preview-body">One employee shows an adjusted gap of −23.4%…</div>
+              </div>
+              <div class="upsell-preview-item">
+                <div class="upsell-preview-title">equity_flag distribution is heavily skewed</div>
+                <div class="upsell-preview-body">72% of rows are "OK", 18% "Monitor"…</div>
+              </div>
+            </div>
+            <div class="upsell-overlay">
+              <div class="upsell-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>
+              </div>
+              <div class="upsell-headline">AI-powered data analysis</div>
+              <div class="upsell-subtext">Surface data quality issues, outliers, and config suggestions automatically.</div>
+              <button class="upsell-cta" onclick="alert('Would navigate to Rippling AI upgrade page')">
+                Learn about Rippling AI
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Configuration (always shown) -->
+        <hr class="rich-divider">
+
+        <div class="rich-section">
+          <div class="rich-section-title">Report</div>
+          <div class="rich-section-body">
+            <div class="rich-kv"><span class="rich-kv-label">Data source:</span> <span class="rich-kv-value">Employee records (derived via custom SQL). Employees appear even if no compensation benchmark exists.</span></div>
+            <div class="rich-kv"><span class="rich-kv-label">Key metrics:</span> <span class="rich-kv-value">Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk. Also includes Employee Name, Department.</span></div>
+            <div class="rich-kv"><span class="rich-kv-label">Time dimension:</span> <span class="rich-kv-value">Current snapshot. Compa ratios and market benchmarks update monthly.</span></div>
+          </div>
+          <ul class="rich-list" style="margin-top:8px;">
+            <li><strong>Filters:</strong> Active employees only, US only, tenure ≥ 6 months, excludes C-Suite</li>
+            <li><strong>Grouping:</strong> By department and level (each row is one employee within their group)</li>
+            <li><strong>Columns:</strong> Employee Name, Department, Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk</li>
+          </ul>
+        </div>
+
+        <hr class="rich-divider">
+
+        <div class="rich-section">
+          <div class="rich-section-title">Other notes</div>
+          <ul class="rich-list">
+            <li>Employees with multiple jobs (e.g., dual roles) appear as separate rows</li>
+            <li>Cohort metrics require 5+ comparable peers; smaller groups use a broader comparison set</li>
+            <li>Employees with undisclosed demographics can't be included in demographic pay gap analysis</li>
+            <li>Retention risk uses market demand data that updates monthly — may lag current conditions</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footers -->
+    <div class="panel-footer" id="footer-base">
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        View custom SQL
+      </button>
+    </div>
+    <div class="panel-footer hidden" id="footer-ai">
+      <button class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        View custom SQL
+      </button>
+    </div>
+  </div>
+
+  <!-- Chat demo -->
+  <div class="chat-demo hidden" id="chatDemo">
+    <div class="chat-demo-header">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.09 6.26L20.18 9l-5 4.36L16.82 20 12 16.77 7.18 20l1.64-6.64L3.82 9l6.09-.74z"/></svg>
+      Rippling AI
+    </div>
+    <div class="chat-demo-body" id="chatPrompt"></div>
+    <div class="chat-demo-hint">Pre-built prompt — user can edit or submit as-is.</div>
+  </div>
+</div>
+
+<script>
+const MARKDOWN_SUMMARY = `### Summary
+
+This table shows **employee-level compensation equity data** for active US employees, **grouped by department and level**. It answers questions like: which employees have pay gaps relative to their cohort, who is flagged for equity review, and where retention risk correlates with compensation.`;
+
+const MARKDOWN_CONFIG = `### Report
+
+**Data source:** Employee records (derived via custom SQL). Employees appear even if no compensation benchmark exists.
+**Key metrics:** Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk. Also includes Employee Name, Department.
+**Time dimension:** Current snapshot. Compa ratios and market benchmarks update monthly.
+
+· **Filters:** Active employees only, US only, tenure ≥ 6 months, excludes C-Suite
+· **Grouping:** By department and level (each row is one employee within their group)
+· **Columns:** Employee Name, Department, Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk
+
+### Other notes
+
+· Employees with multiple jobs (e.g., dual roles) appear as separate rows
+· Cohort metrics require 5+ comparable peers; smaller groups use a broader comparison set
+· Employees with undisclosed demographics can't be included in demographic pay gap analysis
+· Retention risk uses market demand data that updates monthly — may lag current conditions`;
+
+const AI_FINDINGS = [
+  { title: '38% of retention_risk values are null', body: '63 of 164 rows have no retention risk score. Concentrated in Engineering (28 nulls) and Product (19 nulls) — likely employees missing market benchmark data.' },
+  { title: 'adjusted_gap outlier in row 47', body: 'One employee shows an adjusted gap of −23.4%, which is 4.1σ from the mean (−3.8%). Likely a data issue — verify the compa_ratio input for this record.' },
+  { title: 'equity_flag distribution is heavily skewed', body: '72% of rows are "OK", 18% "Monitor", 10% "Review". If the goal is at-risk employees, consider filtering to Monitor + Review only — OK rows may be adding noise.' },
+  { title: 'Grouping produces 3 groups with only 1 row', body: 'Level × Department creates 22 groups, but 3 have a single employee (e.g., L7 × Design). Aggregations on single-row groups aren\'t meaningful — consider broadening the grouping.' },
+  { title: 'pay_gap_to_cohort uses a small peer set for 12 rows', body: '12 employees have cohort sizes of exactly 5 (the minimum threshold). Their pay gap calculations have wider confidence intervals — flag these if using this column for decisions.' },
+];
+
+const STAR_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>';
+
+function buildAiFindings() {
+  return AI_FINDINGS.map(f =>
+    `<div class="prose-finding" onclick="handleMdFindingClick('${f.title.replace(/'/g, "\\'")}')">` +
+      `<div class="prose-finding-text">· <strong>${f.title}</strong> — ${f.body}</div>` +
+      `<div class="prose-finding-icon">${STAR_SVG}</div>` +
+    `</div>`
+  ).join('\n');
+}
+
+const MARKDOWN_AI_HEADER = `### Analysis\n\n<em style="color:var(--on-surface-tertiary)">Generated Apr 20, 9:15 AM</em>\n\n`;
+
+function buildMdUpsell() {
+  return `<div class="md-upsell">` +
+    `<div class="md-upsell-icon">${STAR_SVG}</div>` +
+    `<div class="md-upsell-headline">AI-powered data analysis</div>` +
+    `<div class="md-upsell-subtext">Surface data quality issues, outliers, and config suggestions automatically.</div>` +
+    `<button class="upsell-cta" onclick="alert('Would navigate to Rippling AI upgrade page')">` +
+      `Learn about Rippling AI ` +
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>` +
+    `</button>` +
+  `</div>`;
+}
+
+function mdToHtml(md) {
+  return md
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em style="color:var(--on-surface-tertiary)">$1</em>')
+    .replace(/^· (.+)$/gm, '<li>$1</li>')
+    .replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>')
+    .replace(/^(?!<[hule])(.*\S.*)$/gm, '<p>$1</p>')
+    .replace(/\n{2,}/g, '\n');
+}
+
+let state = { ai: false, outdated: false, upsell: true, markdown: false, tab: 'about' };
+
+function toggle() {
+  state.ai = document.getElementById('aiToggle').checked;
+  state.outdated = document.getElementById('outdatedToggle').checked;
+  state.upsell = document.getElementById('upsellToggle').checked;
+  state.markdown = document.getElementById('markdownToggle').checked;
+  document.getElementById('pill-ai').classList.toggle('active', state.ai);
+  document.getElementById('pill-outdated').classList.toggle('active', state.outdated);
+  document.getElementById('pill-upsell').classList.toggle('active', state.upsell);
+  document.getElementById('pill-markdown').classList.toggle('active', state.markdown);
+  render();
+}
+
+function selectTab(tab) {
+  state.tab = tab;
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  render();
+}
+
+function render() {
+  const tabBtn = document.getElementById('tab-about');
+  tabBtn.textContent = state.ai ? 'Analyze' : 'About';
+
+  // Hide all content
+  ['data','settings'].forEach(t => {
+    document.getElementById('content-' + t).classList.toggle('hidden', state.tab !== t);
+  });
+  document.getElementById('view-rich').classList.add('hidden');
+  document.getElementById('view-markdown').classList.add('hidden');
+
+  // Footers
+  const isAbout = state.tab === 'about';
+  document.getElementById('footer-base').classList.toggle('hidden', !isAbout || state.ai);
+  document.getElementById('footer-ai').classList.toggle('hidden', !isAbout || !state.ai);
+
+  if (!isAbout) return;
+
+  const showUpsell = !state.ai && state.upsell;
+
+  if (state.markdown) {
+    document.getElementById('view-markdown').classList.remove('hidden');
+    let html = mdToHtml(MARKDOWN_SUMMARY);
+    if (state.ai) {
+      html += '<hr>' + mdToHtml(MARKDOWN_AI_HEADER) + buildAiFindings();
+    } else if (showUpsell) {
+      html += '<hr>' + buildMdUpsell();
+    }
+    html += '<hr>' + mdToHtml(MARKDOWN_CONFIG);
+    document.getElementById('markdownBody').innerHTML = html;
+  } else {
+    document.getElementById('view-rich').classList.remove('hidden');
+    document.getElementById('rich-ai').classList.toggle('hidden', !state.ai);
+    document.getElementById('rich-upsell').classList.toggle('hidden', !showUpsell);
+    document.getElementById('outdatedBanner').classList.toggle('hidden', !state.outdated);
+  }
+
+  document.getElementById('chatDemo').classList.add('hidden');
+}
+
+function handleRefresh() {
+  const btn = document.getElementById('refreshBtn');
+  const insights = document.getElementById('aiInsights');
+  const loading = document.getElementById('aiLoading');
+  btn.disabled = true;
+  insights.classList.add('hidden');
+  loading.classList.remove('hidden');
+  setTimeout(() => { loading.classList.add('hidden'); insights.classList.remove('hidden'); btn.disabled = false; }, 1500);
+}
+
+function handleInsightClick(card) {
+  const title = card.querySelector('.insight-title').textContent;
+  showFindingChat(title);
+}
+
+function handleMdFindingClick(title) {
+  showFindingChat(title);
+}
+
+function showFindingChat(title) {
+  const query = 'Tell me more about: ' + title;
+  console.log('[Insight handoff]', query);
+  const el = document.getElementById('chatDemo');
+  document.getElementById('chatPrompt').textContent = query;
+  el.classList.remove('hidden');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function handleContinueInChat() {
+  const el = document.getElementById('chatDemo');
+  document.getElementById('chatPrompt').textContent =
+    'I\'m looking at the report "Compensation Equity Analysis". The analysis shows Engineering has the widest pay gap (avg −6.2%), 12 employees are flagged for immediate review, and retention risk correlates with compensation gaps. I\'d like to dig deeper into...';
+  el.classList.remove('hidden');
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+document.getElementById('upsellToggle').checked = true;
+toggle();
+</script>
+</body>
+</html>
