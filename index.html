@@ -641,7 +641,7 @@
                 <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
               </div>
               <div class="insight-detail">
-                <div class="insight-body">~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the report's compensation distribution is essentially bimodal — averages and medians won't be meaningful without splitting by band.</div>
+                <div class="insight-body">~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the compensation distribution is essentially bimodal — averages and medians are not meaningful without splitting by band.</div>
                 <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('68% of Account Executives earn exactly $81,750')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
@@ -763,7 +763,7 @@ const MARKDOWN_CONFIG = `### Report
 const AI_FINDINGS = [
   { title: '~40 employees appear in multiple rows', body: 'Rachel Sutton has 5 rows, Scott Hunt has 4, Corey Hamilton has 3 — a mix of role changes, rehires, and overlapping terminated/active records. Headcount is overstated by ~15% and compensation averages are diluted. Consider filtering to the latest active record per employee before using this report for planning.' },
   { title: 'All India-based workers are classified Contractor/1099', body: '25+ employees in India are contractors with zero salaried workers at that location. If any work exclusively for Willow on a recurring basis, this pattern may carry worker misclassification risk in Indian labor law. Worth flagging for legal review.' },
-  { title: '68% of Account Executives earn exactly $81,750', body: '~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the report\\'s compensation distribution is essentially bimodal — averages and medians won\\'t be meaningful without splitting by band.' },
+  { title: '68% of Account Executives earn exactly $81,750', body: '~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the compensation distribution is essentially bimodal — averages and medians are not meaningful without splitting by band.' },
 ];
 
 const STAR_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>';
