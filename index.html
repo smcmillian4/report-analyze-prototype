@@ -645,26 +645,6 @@
                 <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('equity_flag distribution is heavily skewed')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
-            <div class="insight-card" data-finding="Grouping produces 3 groups with only 1 row">
-              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">Grouping produces 3 groups with only 1 row</div></div>
-                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-              </div>
-              <div class="insight-detail">
-                <div class="insight-body">The Level × Department grouping creates 22 groups, but 3 have a single employee (e.g., L7 × Design). Aggregations on single-row groups aren't meaningful — consider broadening the grouping.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('Grouping produces 3 groups with only 1 row')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
-              </div>
-            </div>
-            <div class="insight-card" data-finding="pay_gap_to_cohort uses a small peer set for 12 rows">
-              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">pay_gap_to_cohort uses a small peer set for 12 rows</div></div>
-                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-              </div>
-              <div class="insight-detail">
-                <div class="insight-body">12 employees have cohort sizes of exactly 5 (the minimum threshold). Their pay gap calculations have wider confidence intervals — flag these if using this column for decisions.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('pay_gap_to_cohort uses a small peer set for 12 rows')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -784,8 +764,6 @@ const AI_FINDINGS = [
   { title: '38% of retention_risk values are null', body: '63 of 164 rows have no retention risk score. Concentrated in Engineering (28 nulls) and Product (19 nulls) — likely employees missing market benchmark data.' },
   { title: 'adjusted_gap outlier in row 47', body: 'One employee shows an adjusted gap of −23.4%, which is 4.1σ from the mean (−3.8%). Likely a data issue — verify the compa_ratio input for this record.' },
   { title: 'equity_flag distribution is heavily skewed', body: '72% of rows are "OK", 18% "Monitor", 10% "Review". If the goal is at-risk employees, consider filtering to Monitor + Review only — OK rows may be adding noise.' },
-  { title: 'Grouping produces 3 groups with only 1 row', body: 'Level × Department creates 22 groups, but 3 have a single employee (e.g., L7 × Design). Aggregations on single-row groups aren\'t meaningful — consider broadening the grouping.' },
-  { title: 'pay_gap_to_cohort uses a small peer set for 12 rows', body: '12 employees have cohort sizes of exactly 5 (the minimum threshold). Their pay gap calculations have wider confidence intervals — flag these if using this column for decisions.' },
 ];
 
 const STAR_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>';
