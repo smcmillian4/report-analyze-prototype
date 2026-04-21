@@ -615,34 +615,34 @@
           </div>
 
           <div id="aiInsights">
-            <div class="insight-card" data-finding="2 compensation values are likely data errors">
-              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">2 compensation values are likely data errors</div></div>
-                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-              </div>
-              <div class="insight-detail">
-                <div class="insight-body">Joshua Garrett shows $119.6M and Emily Patel shows $870K — both are terminated with non-standard titles ("Surveyor, mining" and "Leisure centre manager"). These will distort any compensation average or aggregate. Exclude or correct before using this data for benchmarking.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('2 compensation values are likely data errors')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
-              </div>
-            </div>
-            <div class="insight-card" data-finding="Rachel Acosta's annual comp is $12,000">
-              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">Rachel Acosta's annual comp is $12,000</div></div>
-                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
-              </div>
-              <div class="insight-detail">
-                <div class="insight-body">A Software Engineer in San Francisco showing $12K/year is 10× below Engineering peers (median ~$125K). Likely a missing zero — should be $120,000. This row will pull down department-level compensation averages significantly.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('Rachel Acosta annual comp is $12,000')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
-              </div>
-            </div>
-            <div class="insight-card" data-finding="~40 employees appear in multiple rows">
+            <div class="insight-card">
               <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
                 <div class="insight-card-content"><div class="insight-title">~40 employees appear in multiple rows</div></div>
                 <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
               </div>
               <div class="insight-detail">
-                <div class="insight-body">Employees like Rachel Sutton (5 rows), Scott Hunt (4 rows), and Corey Hamilton (3 rows) appear repeatedly with different roles or termination dates. If the report counts headcount or averages compensation, these duplicates will inflate the numbers. Consider filtering to the latest active record per employee.</div>
+                <div class="insight-body">Rachel Sutton has 5 rows, Scott Hunt has 4, Corey Hamilton has 3 — a mix of role changes, rehires, and overlapping terminated/active records. Headcount is overstated by ~15% and compensation averages are diluted. Consider filtering to the latest active record per employee before using this report for planning.</div>
                 <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('~40 employees appear in multiple rows')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
+                <div class="insight-card-content"><div class="insight-title">All India-based workers are classified Contractor/1099</div></div>
+                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+              </div>
+              <div class="insight-detail">
+                <div class="insight-body">25+ employees in India are contractors with zero salaried workers at that location. If any work exclusively for Willow on a recurring basis, this pattern may carry worker misclassification risk in Indian labor law. Worth flagging for legal review.</div>
+                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('All India-based workers are classified Contractor/1099')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
+                <div class="insight-card-content"><div class="insight-title">68% of Account Executives earn exactly $81,750</div></div>
+                <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+              </div>
+              <div class="insight-detail">
+                <div class="insight-body">~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the report's compensation distribution is essentially bimodal — averages and medians won't be meaningful without splitting by band.</div>
+                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('68% of Account Executives earn exactly $81,750')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
           </div>
@@ -654,16 +654,16 @@
           <div class="upsell-card">
             <div class="upsell-preview">
               <div class="upsell-preview-item">
-                <div class="upsell-preview-title">2 compensation values are likely data errors</div>
-                <div class="upsell-preview-body">Joshua Garrett shows $119.6M and Emily Patel…</div>
-              </div>
-              <div class="upsell-preview-item">
-                <div class="upsell-preview-title">Rachel Acosta's annual comp is $12,000</div>
-                <div class="upsell-preview-body">A Software Engineer in San Francisco at $12K/year…</div>
-              </div>
-              <div class="upsell-preview-item">
                 <div class="upsell-preview-title">~40 employees appear in multiple rows</div>
                 <div class="upsell-preview-body">Rachel Sutton (5 rows), Scott Hunt (4 rows)…</div>
+              </div>
+              <div class="upsell-preview-item">
+                <div class="upsell-preview-title">All India-based workers are Contractor/1099</div>
+                <div class="upsell-preview-body">25+ employees in India are contractors, zero salaried…</div>
+              </div>
+              <div class="upsell-preview-item">
+                <div class="upsell-preview-title">68% of AEs earn exactly $81,750</div>
+                <div class="upsell-preview-body">~90 of ~130 Account Executives at this exact figure…</div>
               </div>
             </div>
             <div class="upsell-overlay">
@@ -761,9 +761,9 @@ const MARKDOWN_CONFIG = `### Report
 · 3 rows have a blank Employee (display name) field but have Legal First / Last populated`;
 
 const AI_FINDINGS = [
-  { title: '2 compensation values are likely data errors', body: 'Joshua Garrett shows $119.6M and Emily Patel shows $870K — both are terminated with non-standard titles ("Surveyor, mining" and "Leisure centre manager"). These will distort any compensation average or aggregate. Exclude or correct before using this data for benchmarking.' },
-  { title: 'Rachel Acosta\\'s annual comp is $12,000', body: 'A Software Engineer in San Francisco showing $12K/year is 10× below Engineering peers (median ~$125K). Likely a missing zero — should be $120,000. This row will pull down department-level compensation averages significantly.' },
-  { title: '~40 employees appear in multiple rows', body: 'Employees like Rachel Sutton (5 rows), Scott Hunt (4 rows), and Corey Hamilton (3 rows) appear repeatedly with different roles or termination dates. If the report counts headcount or averages compensation, these duplicates will inflate the numbers. Consider filtering to the latest active record per employee.' },
+  { title: '~40 employees appear in multiple rows', body: 'Rachel Sutton has 5 rows, Scott Hunt has 4, Corey Hamilton has 3 — a mix of role changes, rehires, and overlapping terminated/active records. Headcount is overstated by ~15% and compensation averages are diluted. Consider filtering to the latest active record per employee before using this report for planning.' },
+  { title: 'All India-based workers are classified Contractor/1099', body: '25+ employees in India are contractors with zero salaried workers at that location. If any work exclusively for Willow on a recurring basis, this pattern may carry worker misclassification risk in Indian labor law. Worth flagging for legal review.' },
+  { title: '68% of Account Executives earn exactly $81,750', body: '~90 of ~130 AEs are at this exact figure, with another ~20 at exactly $106,275. This creates two rigid comp bands with zero individual variation. If intentional (new-hire OTE band), the report\\'s compensation distribution is essentially bimodal — averages and medians won\\'t be meaningful without splitting by band.' },
 ];
 
 const STAR_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>';
@@ -901,7 +901,11 @@ function handleContinueInChat() {
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+// Init: set default checkbox states and sync pill styles
+document.getElementById('aiToggle').checked = false;
+document.getElementById('outdatedToggle').checked = false;
 document.getElementById('upsellToggle').checked = true;
+document.getElementById('markdownToggle').checked = false;
 toggle();
 </script>
 </body>
