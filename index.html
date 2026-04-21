@@ -583,7 +583,7 @@
         <div class="rich-section">
           <div class="rich-section-title">Summary</div>
           <div class="rich-section-body">
-            <p>This table shows <strong>employee-level compensation equity data</strong> for active US employees, <strong>grouped by department and level</strong>. It answers questions like: which employees have pay gaps relative to their cohort, who is flagged for equity review, and where retention risk correlates with compensation.</p>
+            <p>This table shows <strong>employee-level roster and compensation data</strong> across all departments at Willow. It includes <strong>both active and terminated employees</strong> with base compensation in local currency, employment type, work location, and manager. The report has ~750 rows spanning 15 columns.</p>
           </div>
         </div>
 
@@ -615,34 +615,34 @@
           </div>
 
           <div id="aiInsights">
-            <div class="insight-card" data-finding="38% of retention_risk values are null">
+            <div class="insight-card" data-finding="2 compensation values are likely data errors">
               <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">38% of retention_risk values are null</div></div>
+                <div class="insight-card-content"><div class="insight-title">2 compensation values are likely data errors</div></div>
                 <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
               </div>
               <div class="insight-detail">
-                <div class="insight-body">63 of 164 rows have no retention risk score. These are concentrated in Engineering (28 nulls) and Product (19 nulls) — likely employees missing market benchmark data.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('38% of retention_risk values are null')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
+                <div class="insight-body">Joshua Garrett shows $119.6M and Emily Patel shows $870K — both are terminated with non-standard titles ("Surveyor, mining" and "Leisure centre manager"). These will distort any compensation average or aggregate. Exclude or correct before using this data for benchmarking.</div>
+                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('2 compensation values are likely data errors')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
-            <div class="insight-card" data-finding="adjusted_gap outlier in row 47">
+            <div class="insight-card" data-finding="Rachel Acosta's annual comp is $12,000">
               <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">adjusted_gap outlier in row 47</div></div>
+                <div class="insight-card-content"><div class="insight-title">Rachel Acosta's annual comp is $12,000</div></div>
                 <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
               </div>
               <div class="insight-detail">
-                <div class="insight-body">One employee shows an adjusted gap of −23.4%, which is 4.1σ from the mean (−3.8%). This is likely a data issue — verify the compa_ratio input for this record.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('adjusted_gap outlier in row 47')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
+                <div class="insight-body">A Software Engineer in San Francisco showing $12K/year is 10× below Engineering peers (median ~$125K). Likely a missing zero — should be $120,000. This row will pull down department-level compensation averages significantly.</div>
+                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('Rachel Acosta annual comp is $12,000')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
-            <div class="insight-card" data-finding="equity_flag distribution is heavily skewed">
+            <div class="insight-card" data-finding="~40 employees appear in multiple rows">
               <div class="insight-card-header" onclick="toggleInsight(this.parentElement)">
-                <div class="insight-card-content"><div class="insight-title">equity_flag distribution is heavily skewed</div></div>
+                <div class="insight-card-content"><div class="insight-title">~40 employees appear in multiple rows</div></div>
                 <div class="insight-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
               </div>
               <div class="insight-detail">
-                <div class="insight-body">72% of rows are "OK", 18% are "Monitor", 10% are "Review". If the goal is to focus on at-risk employees, consider filtering to Monitor + Review only — the OK rows may be adding noise.</div>
-                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('equity_flag distribution is heavily skewed')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
+                <div class="insight-body">Employees like Rachel Sutton (5 rows), Scott Hunt (4 rows), and Corey Hamilton (3 rows) appear repeatedly with different roles or termination dates. If the report counts headcount or averages compensation, these duplicates will inflate the numbers. Consider filtering to the latest active record per employee.</div>
+                <div class="insight-detail-footer" onclick="event.stopPropagation();showFindingChat('~40 employees appear in multiple rows')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg><span>Dig deeper</span></div>
               </div>
             </div>
           </div>
@@ -654,16 +654,16 @@
           <div class="upsell-card">
             <div class="upsell-preview">
               <div class="upsell-preview-item">
-                <div class="upsell-preview-title">38% of retention_risk values are null</div>
-                <div class="upsell-preview-body">63 of 164 rows have no retention risk score…</div>
+                <div class="upsell-preview-title">2 compensation values are likely data errors</div>
+                <div class="upsell-preview-body">Joshua Garrett shows $119.6M and Emily Patel…</div>
               </div>
               <div class="upsell-preview-item">
-                <div class="upsell-preview-title">adjusted_gap outlier in row 47</div>
-                <div class="upsell-preview-body">One employee shows an adjusted gap of −23.4%…</div>
+                <div class="upsell-preview-title">Rachel Acosta's annual comp is $12,000</div>
+                <div class="upsell-preview-body">A Software Engineer in San Francisco at $12K/year…</div>
               </div>
               <div class="upsell-preview-item">
-                <div class="upsell-preview-title">equity_flag distribution is heavily skewed</div>
-                <div class="upsell-preview-body">72% of rows are "OK", 18% "Monitor"…</div>
+                <div class="upsell-preview-title">~40 employees appear in multiple rows</div>
+                <div class="upsell-preview-body">Rachel Sutton (5 rows), Scott Hunt (4 rows)…</div>
               </div>
             </div>
             <div class="upsell-overlay">
@@ -686,14 +686,14 @@
         <div class="rich-section">
           <div class="rich-section-title">Report</div>
           <div class="rich-section-body">
-            <div class="rich-kv"><span class="rich-kv-label">Data source:</span> <span class="rich-kv-value">Employee records (derived via custom SQL). Employees appear even if no compensation benchmark exists.</span></div>
-            <div class="rich-kv"><span class="rich-kv-label">Key metrics:</span> <span class="rich-kv-value">Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk. Also includes Employee Name, Department.</span></div>
-            <div class="rich-kv"><span class="rich-kv-label">Time dimension:</span> <span class="rich-kv-value">Current snapshot. Compa ratios and market benchmarks update monthly.</span></div>
+            <div class="rich-kv"><span class="rich-kv-label">Data source:</span> <span class="rich-kv-value">Willow HRIS employee records. Includes all employment statuses (active and terminated).</span></div>
+            <div class="rich-kv"><span class="rich-kv-label">Row count:</span> <span class="rich-kv-value">~750 rows. Each row is one employee record (an employee may have multiple rows for different roles or rehires).</span></div>
+            <div class="rich-kv"><span class="rich-kv-label">Currencies:</span> <span class="rich-kv-value">Mixed — USD, EUR, GBP, AUD, AMD, DOP, RON, SAR, SRD, UYU. Compensation is in local currency, not normalized.</span></div>
           </div>
           <ul class="rich-list" style="margin-top:8px;">
-            <li><strong>Filters:</strong> Active employees only, US only, tenure ≥ 6 months, excludes C-Suite</li>
-            <li><strong>Grouping:</strong> By department and level (each row is one employee within their group)</li>
-            <li><strong>Columns:</strong> Employee Name, Department, Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk</li>
+            <li><strong>Filters:</strong> None — includes active, terminated, and contractor records across all locations</li>
+            <li><strong>Grouping:</strong> None applied</li>
+            <li><strong>Columns:</strong> Employee, Legal Name, Title, Department, Manager, Work Location, Employment Type, Currency, Annual Base Compensation, Employment Status, Start Date, Last Day of Work, DOB, Email, Phone</li>
           </ul>
         </div>
 
@@ -702,10 +702,10 @@
         <div class="rich-section">
           <div class="rich-section-title">Other notes</div>
           <ul class="rich-list">
-            <li>Employees with multiple jobs (e.g., dual roles) appear as separate rows</li>
-            <li>Cohort metrics require 5+ comparable peers; smaller groups use a broader comparison set</li>
-            <li>Employees with undisclosed demographics can't be included in demographic pay gap analysis</li>
-            <li>Retention risk uses market demand data that updates monthly — may lag current conditions</li>
+            <li>Employees with multiple roles or rehires appear as separate rows (e.g., Scott Hunt has 4 records)</li>
+            <li>Compensation is not normalized across currencies — cross-country comparisons require FX conversion</li>
+            <li>Some terminated records have blank Title, Department, or Manager fields</li>
+            <li>3 rows have a blank Employee (display name) field but have Legal First / Last populated</li>
           </ul>
         </div>
 
@@ -741,29 +741,29 @@
 <script>
 const MARKDOWN_SUMMARY = `### Summary
 
-This table shows **employee-level compensation equity data** for active US employees, **grouped by department and level**. It answers questions like: which employees have pay gaps relative to their cohort, who is flagged for equity review, and where retention risk correlates with compensation.`;
+This table shows **employee-level roster and compensation data** across all departments at Willow. It includes **both active and terminated employees** with base compensation in local currency, employment type, work location, and manager. The report has ~750 rows spanning 15 columns.`;
 
 const MARKDOWN_CONFIG = `### Report
 
-**Data source:** Employee records (derived via custom SQL). Employees appear even if no compensation benchmark exists.
-**Key metrics:** Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk. Also includes Employee Name, Department.
-**Time dimension:** Current snapshot. Compa ratios and market benchmarks update monthly.
+**Data source:** Willow HRIS employee records. Includes all employment statuses (active and terminated).
+**Row count:** ~750 rows. Each row is one employee record (an employee may have multiple rows for different roles or rehires).
+**Currencies:** Mixed — USD, EUR, GBP, AUD, AMD, DOP, RON, SAR, SRD, UYU. Compensation is in local currency, not normalized.
 
-· **Filters:** Active employees only, US only, tenure ≥ 6 months, excludes C-Suite
-· **Grouping:** By department and level (each row is one employee within their group)
-· **Columns:** Employee Name, Department, Compa Ratio, Pay Gap to Cohort, Adjusted Gap, Equity Flag, Retention Risk
+· **Filters:** None — includes active, terminated, and contractor records across all locations
+· **Grouping:** None applied
+· **Columns:** Employee, Legal Name, Title, Department, Manager, Work Location, Employment Type, Currency, Annual Base Compensation, Employment Status, Start Date, Last Day of Work, DOB, Email, Phone
 
 ### Other notes
 
-· Employees with multiple jobs (e.g., dual roles) appear as separate rows
-· Cohort metrics require 5+ comparable peers; smaller groups use a broader comparison set
-· Employees with undisclosed demographics can't be included in demographic pay gap analysis
-· Retention risk uses market demand data that updates monthly — may lag current conditions`;
+· Employees with multiple roles or rehires appear as separate rows (e.g., Scott Hunt has 4 records)
+· Compensation is not normalized across currencies — cross-country comparisons require FX conversion
+· Some terminated records have blank Title, Department, or Manager fields
+· 3 rows have a blank Employee (display name) field but have Legal First / Last populated`;
 
 const AI_FINDINGS = [
-  { title: '38% of retention_risk values are null', body: '63 of 164 rows have no retention risk score. Concentrated in Engineering (28 nulls) and Product (19 nulls) — likely employees missing market benchmark data.' },
-  { title: 'adjusted_gap outlier in row 47', body: 'One employee shows an adjusted gap of −23.4%, which is 4.1σ from the mean (−3.8%). Likely a data issue — verify the compa_ratio input for this record.' },
-  { title: 'equity_flag distribution is heavily skewed', body: '72% of rows are "OK", 18% "Monitor", 10% "Review". If the goal is at-risk employees, consider filtering to Monitor + Review only — OK rows may be adding noise.' },
+  { title: '2 compensation values are likely data errors', body: 'Joshua Garrett shows $119.6M and Emily Patel shows $870K — both are terminated with non-standard titles ("Surveyor, mining" and "Leisure centre manager"). These will distort any compensation average or aggregate. Exclude or correct before using this data for benchmarking.' },
+  { title: 'Rachel Acosta\\'s annual comp is $12,000', body: 'A Software Engineer in San Francisco showing $12K/year is 10× below Engineering peers (median ~$125K). Likely a missing zero — should be $120,000. This row will pull down department-level compensation averages significantly.' },
+  { title: '~40 employees appear in multiple rows', body: 'Employees like Rachel Sutton (5 rows), Scott Hunt (4 rows), and Corey Hamilton (3 rows) appear repeatedly with different roles or termination dates. If the report counts headcount or averages compensation, these duplicates will inflate the numbers. Consider filtering to the latest active record per employee.' },
 ];
 
 const STAR_SVG = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12 2 14.5 8.5 12 12C15.5 9.5 22 12 22 12C22 12 15.5 14.5 12 12C14.5 15.5 12 22 12 22C12 22 9.5 15.5 12 12C8.5 14.5 2 12 2 12C2 12 8.5 9.5 12 12C9.5 8.5 12 2 12 2Z"/></svg>';
